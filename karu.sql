@@ -41,3 +41,4 @@ UPDATE Karatina_University SET department='Computer Science' WHERE admission_num
 UPDATE Karatina_University SET department='Computer Science' WHERE admission_number=10;
 UPDATE Karatina_University SET department='Computer Science' WHERE admission_number=11;
 
+
