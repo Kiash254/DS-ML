@@ -11,4 +11,3 @@ insert into karatina_library values('user', 'user', 'user', 'user');
 insert into karatina_library values('guest', 'guest', 'guest', 'guest');
 insert into karatina_library values('vin', 'kip', 'che', 'by');
 --add a column to the table to hold the sign in time of the user in karatina library table
-alter

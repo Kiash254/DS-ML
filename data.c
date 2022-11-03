@@ -1,1 +1,0 @@
-//write a hello world in c
