@@ -72,12 +72,113 @@ WHERE (SELECT COUNT(DISTINCT DepartmentID) FROM HumanResources.EmployeeDepartmen
 GROUP BY p.FirstName, p.LastName
 
 
+
+--Using JOIN re-Write your the same question from question 6
+
+SELECT p.FirstName, p.LastName
+FROM Person.Person p
+INNER JOIN HumanResources.Employee e
+ON p.BusinessEntityID = e.BusinessEntityID
+INNER JOIN HumanResources.EmployeeDepartmentHistory edh
+ON e.BusinessEntityID = edh.BusinessEntityID
+GROUP BY p.FirstName, p.LastName
+HAVING COUNT(DISTINCT edh.DepartmentID) >= 2
+
+
+
 -- Provide a list of Vendors that supply more than one type of product 
 -- HINT : [Purchasing].[ProductVendor],[Purchasing].[Vendor], 
 -- Non correlated sub query in WHERE Clause,GROUP BY IN Subquery , 
 -- HAVING In Subquery, COUNT IN Subquery
+SELECT v.Name
+FROM Purchasing.Vendor v
+INNER JOIN Purchasing.ProductVendor pv
+ON v.BusinessEntityID = pv.BusinessEntityID
+WHERE (SELECT COUNT(DISTINCT ProductID) FROM Purchasing.ProductVendor WHERE BusinessEntityID = v.BusinessEntityID) >= 2
+GROUP BY v.Name
 
-SELECT 
+---Re write question 8's query using a JOIN
+
+SELECT v.Name
+FROM Purchasing.Vendor v
+INNER JOIN Purchasing.ProductVendor pv
+ON v.BusinessEntityID = pv.BusinessEntityID
+GROUP BY v.Name
+HAVING COUNT(DISTINCT pv.ProductID) >= 2
+
+
+--Provide a list of individual products (Product Name , List Price) 
+-- that are supplied by different vendors. i.e a single product can be supplied by multiple vendors
+-- HINT : [Purchasing].[ProductVendor],[Production].[Product], 
+-- Non correlated sub query in WHERE Clause,GROUP BY IN Subquery , 
+-- HAVING In Subquery, COUNT DISTINCT IN Subquery
+
+SELECT p.Name, p.ListPrice
+FROM Production.Product p
+INNER JOIN Purchasing.ProductVendor pv
+ON p.ProductID = pv.ProductID
+WHERE (SELECT COUNT(DISTINCT BusinessEntityID) FROM Purchasing.ProductVendor WHERE ProductID = p.ProductID) >= 2
+GROUP BY p.Name, p.ListPrice
+
+
+-- Return the job title, birthdate, gender, and vacation hours, sick leave hours.
+-- Write a column that meets the below condition
+--    If the salaried Flag is 1 then Employee else contractor
+--  If the salaried Flag is 1 then = "Yes Make"
+--  Else "contractor"
+
+
+SELECT j.Name
+FROM HumanResources.JobCandidate j
+INNER JOIN HumanResources.Employee e
+ON j.BusinessEntityID = e.BusinessEntityID
+WHERE (SELECT COUNT(DISTINCT BusinessEntityID) FROM HumanResources.Employee WHERE BusinessEntityID = j.BusinessEntityID) >= 2
+GROUP BY j.Name
+
+
+--RETURN THE [MaritalStatus], [Gender] ,[VacationHours] ,[SickLeaveHours]
+--Please create a derived column to indicate when the Marital Status is 
+--M to read married and when the 
+--Marital Status is S to read single
+
+
+SELECT p.MaritalStatus
+FROM Person.Person p
+INNER JOIN HumanResources.Employee e
+ON p.BusinessEntityID = e.BusinessEntityID
+WHERE (SELECT COUNT(DISTINCT BusinessEntityID) FROM HumanResources.Employee WHERE BusinessEntityID = p.BusinessEntityID) >= 2
+GROUP BY p.MaritalStatus
+
+--RETURN THE [MaritalStatus], [Gender] ,[VacationHours] ,[SickLeaveHours]
+--Please create a derived column to indicate when the Marital Status is 
+--M to read married and when the 
+--Marital Status is S to read single
+--Also create another derived column that indicate M for Male and F for female
+
+
+SELECT p.MaritalStatus
+FROM Person.Person p
+INNER JOIN HumanResources.Employee e
+ON p.BusinessEntityID = e.BusinessEntityID
+WHERE (SELECT COUNT(DISTINCT BusinessEntityID) FROM HumanResources.Employee WHERE BusinessEntityID = p.BusinessEntityID) >= 2
+GROUP BY p.MaritalStatus
+
+
+
+
+--RETURN THE [MaritalStatus], [Gender] ,[VacationHours] ,[SickLeaveHours]
+--Please create a derived column to indicate when the Marital Status is 
+--M and vacation hours is grater than 50 it should read "Go to Vacation" 
+--ALSO if the Marital Status is S and the vacation hours is less than
+-- 30 it should "you need more hours"  
+--Every other category should ready "you are safe"
+
+SELECT p.MaritalStatus AS Marital
+FROM Person.Person p
+INNER JOIN HumanResources.Employee e
+ON p.BusinessEntityID = e.BusinessEntityID
+WHERE (SELECT COUNT(DISTINCT BusinessEntityID) FROM HumanResources.Employee WHERE BusinessEntityID = p.BusinessEntityID) >= 2
+GROUP BY p.MaritalStatus
 
 
 
