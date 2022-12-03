@@ -12,3 +12,9 @@ borrower_password VARCHAR(50) NOT NULL,
 borrower_status VARCHAR(50) NOT NULL,
 PRIMARY KEY(borrower_id)
 );
+
+-- add one column called statements
+
+ALTER TABLE Borrower(
+    
+)
